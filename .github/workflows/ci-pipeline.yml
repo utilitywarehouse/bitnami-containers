@@ -27,6 +27,11 @@ jobs:
       containers: ${{ steps.get-containers.outputs.containers }}
       dockerfiles: ${{ steps.get-containers.outputs.dockerfiles }}
     steps:
+      - name: Harden the runner (Audit all outbound calls)
+        uses: step-security/harden-runner@20cf305ff2072d973412fa9b1e3a4f227bda3c76 # v2.14.0
+        with:
+          egress-policy: audit
+
       - id: get-containers
         name: Get modified containers
         env:
@@ -63,6 +68,11 @@ jobs:
     if: |
       needs.get-containers.outputs.result == 'ok'
     steps:
+      - name: Harden the runner (Audit all outbound calls)
+        uses: step-security/harden-runner@20cf305ff2072d973412fa9b1e3a4f227bda3c76 # v2.14.0
+        with:
+          egress-policy: audit
+
       - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8
         name: Checkout Repository
         with:
@@ -97,6 +107,11 @@ jobs:
     steps:
       # Approve the CI's PR automatically, as it has been tested in our internal pipeline already
       # Approved by the 'github-actions' user; a PR can't be approved by its author
+      - name: Harden the runner (Audit all outbound calls)
+        uses: step-security/harden-runner@20cf305ff2072d973412fa9b1e3a4f227bda3c76 # v2.14.0
+        with:
+          egress-policy: audit
+
       - name: PR Approval
         uses: actions/github-script@ed597411d8f924073f98dfc5c65a23a2325f34cd
         with:
